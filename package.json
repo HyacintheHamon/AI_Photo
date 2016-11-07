@@ -2,14 +2,12 @@
   "name": "AI_Photo",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
-  },
   "dependencies": {
     "native-base": "^0.5.13",
     "react": "15.3.2",
     "react-native": "0.36.1",
+    "react-native-crypto": "^2.0.1",
+    "react-native-randombytes": "^2.1.0",
     "react-native-vector-icons": "^3.0.0"
   },
   "jest": {
