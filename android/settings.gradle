@@ -1,0 +1,3 @@
+rootProject.name = 'AI_Photo'
+
+include ':app'
