@@ -18,6 +18,10 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  image:{
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 module.exports = styles;
