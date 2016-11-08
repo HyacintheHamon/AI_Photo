@@ -25,35 +25,92 @@ import {
 
 import styles from './src/styles.js';
 
+// The following is the JSON that the following request outputs:
+// const x = {
+//   categories: [{
+//     name: 'plant_flower',
+//     score: 0.73046875
+//   }],
+//   requestId: 'c91c08b1-cc88-4004-8f92-dc5f5330148f',
+//   metadata: {
+//     width: 387,
+//     height: 221,
+//     format: 'Jpeg'
+//   }
+// };
 // Computer Vision Key: c3fd9e451da54cb7a1327ea21c1c182e
-const getDataFromMicrosoft = () => {
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/json');
-  headers.append('Ocp-Apim-Subscription-Key', 'c3fd9e451da54cb7a1327ea21c1c182e');
-
-  const init = {
-    method: 'POST',
-    body: '{"url":"https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg"}',
-    headers: headers
-  };
-
-  const myRequest = new Request('https://api.projectoxford.ai/vision/v1.0/analyze?', init);
-
-  fetch(myRequest)
-    .then(function(response) {
-      if(response.status == 200) return response.json();
-      else throw new Error('Something went wrong on api server!');
-    })
-    .then(function(response) {
-      console.debug(response);
-    })
-    .catch(function(error) {
-      console.error(error);
-    });
-  console.log('Hey now');
-};
+// const getDataFromMicrosoft = () => {
+//   let headers = new Headers();
+//   headers.append('Content-Type', 'application/json');
+//   headers.append('Ocp-Apim-Subscription-Key', 'c3fd9e451da54cb7a1327ea21c1c182e');
+//
+//   const init = {
+//     method: 'POST',
+//     body: '{"url":"https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg"}',
+//     headers: headers
+//   };
+//
+//   const myRequest = new Request('https://api.projectoxford.ai/vision/v1.0/analyze?', init);
+//
+//   fetch(myRequest)
+//     .then(function(response) {
+//       if(response.status == 200) return response.json();
+//       else throw new Error('Something went wrong on api server!');
+//     })
+//     .then(function(response) {
+//       return response.categories[0].name;
+//     })
+//     .catch(function(error) {
+//       console.error(error);
+//     });
+// };
 
 export default class AI_Photo extends Component {
+  state: {
+    text: string
+  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: "hey now"
+    };
+  }
+
+  // setTheText() {
+  //   getDataFromMicrosoft().then((x) => {
+  //     this.setState({text:x})
+  //   })
+  // }
+
+  getDataFromMicrosoft() {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Ocp-Apim-Subscription-Key', 'c3fd9e451da54cb7a1327ea21c1c182e');
+
+    const init = {
+      method: 'POST',
+      body: '{"url":"https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg"}',
+      headers: headers
+    };
+
+    const myRequest = new Request('https://api.projectoxford.ai/vision/v1.0/analyze?', init);
+
+    fetch(myRequest)
+      .then(function(response) {
+        if(response.status == 200) return response.json();
+        else throw new Error('Something went wrong on api server!');
+      })
+      .then(function(response) {
+        return response.categories[0].name;
+      })
+      .then(function(name) {
+        this.setState({text:name});
+      }.bind(this))
+      .catch(function(error) {
+        console.error(error);
+      });
+  }
+
   render() {
     let pic = {
       uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
@@ -64,9 +121,10 @@ export default class AI_Photo extends Component {
           <Title>AI Photo</Title>
         </Header>
         <Content>
-          <TouchableHighlight style={styles.image} onPress={() => getDataFromMicrosoft()}>
+          <TouchableHighlight style={styles.image} onPress={() => this.getDataFromMicrosoft()}>
             <Image source={pic} style={{width: 193, height: 110}}/>
           </TouchableHighlight>
+          <Text>{this.state.text}</Text>
         </Content>
       </Container>
     );
