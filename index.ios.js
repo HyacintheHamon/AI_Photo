@@ -39,31 +39,6 @@ import styles from './src/styles.js';
 //   }
 // };
 // Computer Vision Key: c3fd9e451da54cb7a1327ea21c1c182e
-// const getDataFromMicrosoft = () => {
-//   let headers = new Headers();
-//   headers.append('Content-Type', 'application/json');
-//   headers.append('Ocp-Apim-Subscription-Key', 'c3fd9e451da54cb7a1327ea21c1c182e');
-//
-//   const init = {
-//     method: 'POST',
-//     body: '{"url":"https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg"}',
-//     headers: headers
-//   };
-//
-//   const myRequest = new Request('https://api.projectoxford.ai/vision/v1.0/analyze?', init);
-//
-//   fetch(myRequest)
-//     .then(function(response) {
-//       if(response.status == 200) return response.json();
-//       else throw new Error('Something went wrong on api server!');
-//     })
-//     .then(function(response) {
-//       return response.categories[0].name;
-//     })
-//     .catch(function(error) {
-//       console.error(error);
-//     });
-// };
 
 export default class AI_Photo extends Component {
   state: {
@@ -76,39 +51,22 @@ export default class AI_Photo extends Component {
     };
   }
 
-  // setTheText() {
-  //   getDataFromMicrosoft().then((x) => {
-  //     this.setState({text:x})
-  //   })
-  // }
-
   getDataFromMicrosoft() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Ocp-Apim-Subscription-Key', 'c3fd9e451da54cb7a1327ea21c1c182e');
-
     const init = {
       method: 'POST',
       body: '{"url":"https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg"}',
       headers: headers
     };
-
     const myRequest = new Request('https://api.projectoxford.ai/vision/v1.0/analyze?', init);
 
     fetch(myRequest)
-      .then(function(response) {
-        if(response.status == 200) return response.json();
-        else throw new Error('Something went wrong on api server!');
-      })
-      .then(function(response) {
-        return response.categories[0].name;
-      })
-      .then(function(name) {
-        this.setState({text:name});
-      }.bind(this))
-      .catch(function(error) {
-        console.error(error);
-      });
+      .then(response => response.json())
+      .then(json => json.categories[0].name)
+      .then(function(name) { this.setState({text:name}) }.bind(this))
+      .catch((error) => { console.error(error) });
   }
 
   render() {
@@ -121,10 +79,11 @@ export default class AI_Photo extends Component {
           <Title>AI Photo</Title>
         </Header>
         <Content>
-          <TouchableHighlight style={styles.image} onPress={() => this.getDataFromMicrosoft()}>
+          <View style={styles.image} >
             <Image source={pic} style={{width: 193, height: 110}}/>
-          </TouchableHighlight>
+          </View>
           <Text>{this.state.text}</Text>
+          <Button onPress={() => this.getDataFromMicrosoft()}>Send Data</Button>
         </Content>
       </Container>
     );
