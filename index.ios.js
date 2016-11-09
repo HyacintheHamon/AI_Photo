@@ -24,6 +24,7 @@ import {
   View, } from 'native-base';
 
 import styles from './src/styles.js';
+const speech = require('react-native-speech');
 
 // The following is the JSON that the following request outputs:
 // const x = {
@@ -39,6 +40,7 @@ import styles from './src/styles.js';
 //   }
 // };
 // Computer Vision Key: c3fd9e451da54cb7a1327ea21c1c182e
+// https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg
 
 export default class AI_Photo extends Component {
   state: {
@@ -51,13 +53,13 @@ export default class AI_Photo extends Component {
     };
   }
 
-  getDataFromMicrosoft() {
+  getNameOfPicture() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Ocp-Apim-Subscription-Key', 'c3fd9e451da54cb7a1327ea21c1c182e');
     const init = {
       method: 'POST',
-      body: '{"url":"https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg"}',
+      body: '{"url":"https://www.occrp.org/images/stories/CCWatch/16147_2.jpg"}',
       headers: headers
     };
     const myRequest = new Request('https://api.projectoxford.ai/vision/v1.0/analyze?', init);
@@ -65,13 +67,22 @@ export default class AI_Photo extends Component {
     fetch(myRequest)
       .then(response => response.json())
       .then(json => json.categories[0].name)
-      .then(function(name) { this.setState({text:name}) }.bind(this))
+      .then(function(name) {
+        this.setState({text:name});
+        return name;
+      }.bind(this))
+      .then((name) => {
+        speech.speak({
+          text: 'Your photo is of a ' + name,
+          voice: 'en-US'
+        });
+      })
       .catch((error) => { console.error(error) });
   }
 
   render() {
     let pic = {
-      uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
+      uri: 'https://www.occrp.org/images/stories/CCWatch/16147_2.jpg'
     };
     return (
       <Container>
@@ -83,11 +94,11 @@ export default class AI_Photo extends Component {
             <Image source={pic} style={{width: 193, height: 110}}/>
           </View>
           <Text>{this.state.text}</Text>
-          <Button onPress={() => this.getDataFromMicrosoft()}>Send Data</Button>
+          <Button onPress={() => this.getNameOfPicture()}>Send Data</Button>
         </Content>
       </Container>
     );
   }
 }
 
-AppRegistry.registerComponent('AI_Photo', function() { return AI_Photo });
+AppRegistry.registerComponent('AI_Photo', () => AI_Photo);
