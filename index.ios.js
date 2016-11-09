@@ -1,4 +1,3 @@
-
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -30,30 +29,17 @@ import styles from './src/styles.js';
 const speech = require('react-native-speech');
 const ImagePicker = require('react-native-image-picker');
 
-// The following is the JSON that the following request outputs:
-// const x = {
-//   categories: [{
-//     name: 'plant_flower',
-//     score: 0.73046875
-//   }],
-//   requestId: 'c91c08b1-cc88-4004-8f92-dc5f5330148f',
-//   metadata: {
-//     width: 387,
-//     height: 221,
-//     format: 'Jpeg'
-//   }
-// };
-// Computer Vision Key: c3fd9e451da54cb7a1327ea21c1c182e
-// https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg
-
 export default class AI_Photo extends Component {
-  state: {
-    text: string
-  };
+  // state: {
+  //   text: string
+  // };
   constructor(props) {
     super(props);
     this.state = {
-      text: "hey now"
+      text: "hey now",
+      pic: {
+        uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
+      },
     };
   }
 
@@ -84,24 +70,27 @@ export default class AI_Photo extends Component {
       .catch((error) => { console.error(error) });
   }
 
-  // componentDidMount() {
-  //   ImagePicker.showImagePicker(null, (response)  => {
-  //     // Same code as in above section!
-  //     console.log(response);
-  //   });
-  // }
+  // Response object.
+  /*
+  {
+    height: 2560,
+    origURL: 'assets-library://asset/asset.JPG?id=452224F4-B49A-4A46-95A1-E391A5C2AA30&ext=JPG',
+    data: '/9j/4AAQSkZJRgABAQAASABIAAD/,
+    width: 1440,
+    fileSize: 152466,
+    isVertical: true,
+    uri: 'file:///Users/JacobSiegel/Library/Developer/CoreSimulator/Devices/1F6B2B24-E58E-4AC2-AFC6-D4423122DEFC/data/Containers/Data/Application/5F211997-A2BD-48A2-B7C7-BF89D0602BE1/tmp/02096692-A539-4A05-85AD-6AF4698B4D98.jpg',
+  }
 
+  */
   launchImagePicker() {
-    ImagePicker.showImagePicker(null, (response)  => {
-      // Same code as in above section!
-      console.log(response);
+    ImagePicker.showImagePicker(null, (response) => {
+      console.log(response.uri);
+      this.setState({pic: {uri:response.uri}});
     });
   }
 
   render() {
-    const pic = {
-      uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
-    };
     return (
       <Container>
         <Header>
@@ -110,7 +99,7 @@ export default class AI_Photo extends Component {
         <Content>
           <Text style = {styles.welcome}>Tap the image to select a new photo!</Text>
           <TouchableHighlight onPress={() => this.launchImagePicker()} style={styles.image}>
-            <Image style={{width: 193, height: 110}} source={pic} />
+            <Image style={{width: 193, height: 110}} source={this.state.pic} />
           </TouchableHighlight>
           <Text>{this.state.text}</Text>
           <Button onPress={() => this.getNameOfPicture()}>Send Data</Button>
