@@ -12,7 +12,6 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
-  ImagePickerIOS,
 } from 'react-native';
 import {
   Container,
@@ -85,11 +84,18 @@ export default class AI_Photo extends Component {
       .catch((error) => { console.error(error) });
   }
 
-  componentDidMount() {
+  // componentDidMount() {
+  //   ImagePicker.showImagePicker(null, (response)  => {
+  //     // Same code as in above section!
+  //     console.log(response);
+  //   });
+  // }
+
+  launchImagePicker() {
     ImagePicker.showImagePicker(null, (response)  => {
       // Same code as in above section!
       console.log(response);
-  });
+    });
   }
 
   render() {
@@ -102,10 +108,13 @@ export default class AI_Photo extends Component {
           <Title>AI Photo</Title>
         </Header>
         <Content>
-          <Text style = {styles.welcome}>Tap the image to select a new photo</Text>
-          <View style={styles.image}>
+          <Text style = {styles.welcome}>Tap the image to select a new photo!</Text>
+
+
+          <TouchableHighlight onPress={() => this.launchImagePicker()} style={styles.image}>
             <Image style={{width: 193, height: 110}} source={pic} />
-          </View>
+          </TouchableHighlight>
+
           <Text>{this.state.text}</Text>
           <Button onPress={() => this.getNameOfPicture()}>Send Data</Button>
         </Content>
