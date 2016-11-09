@@ -67,10 +67,10 @@ export default class AI_Photo extends Component {
     fetch(myRequest)
       .then(response => response.json())
       .then(json => json.categories[0].name)
-      .then(function(name) {
+      .then((name) => {
         this.setState({text:name});
         return name;
-      }.bind(this))
+      })
       .then((name) => {
         speech.speak({
           text: 'Your photo is of a ' + name,
