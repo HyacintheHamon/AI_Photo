@@ -109,12 +109,9 @@ export default class AI_Photo extends Component {
         </Header>
         <Content>
           <Text style = {styles.welcome}>Tap the image to select a new photo!</Text>
-
-
           <TouchableHighlight onPress={() => this.launchImagePicker()} style={styles.image}>
             <Image style={{width: 193, height: 110}} source={pic} />
           </TouchableHighlight>
-
           <Text>{this.state.text}</Text>
           <Button onPress={() => this.getNameOfPicture()}>Send Data</Button>
         </Content>
