@@ -1,3 +1,4 @@
+
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -28,7 +29,7 @@ import {
 
 import styles from './src/styles.js';
 const speech = require('react-native-speech');
-import MainImage from './src/MainImage.js';
+const ImagePicker = require('react-native-image-picker');
 
 // The following is the JSON that the following request outputs:
 // const x = {
@@ -84,9 +85,16 @@ export default class AI_Photo extends Component {
       .catch((error) => { console.error(error) });
   }
 
+  componentDidMount() {
+    ImagePicker.showImagePicker(null, (response)  => {
+      // Same code as in above section!
+      console.log(response);
+  });
+  }
+
   render() {
-    let pic = {
-      uri: 'https://www.occrp.org/images/stories/CCWatch/16147_2.jpg'
+    const pic = {
+      uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
     };
     return (
       <Container>
@@ -95,7 +103,9 @@ export default class AI_Photo extends Component {
         </Header>
         <Content>
           <Text style = {styles.welcome}>Tap the image to select a new photo</Text>
-          <MainImage/>
+          <View style={styles.image}>
+            <Image style={{width: 193, height: 110}} source={pic} />
+          </View>
           <Text>{this.state.text}</Text>
           <Button onPress={() => this.getNameOfPicture()}>Send Data</Button>
         </Content>
