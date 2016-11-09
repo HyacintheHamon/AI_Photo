@@ -3,6 +3,7 @@
  * https://github.com/facebook/react-native
  * @flow
  */
+ 'use strict';
 
 import React, { Component } from 'react';
 import {
@@ -27,6 +28,7 @@ import {
 
 import styles from './src/styles.js';
 const speech = require('react-native-speech');
+import MainImage from './src/MainImage.js';
 
 // The following is the JSON that the following request outputs:
 // const x = {
@@ -92,10 +94,8 @@ export default class AI_Photo extends Component {
           <Title>AI Photo</Title>
         </Header>
         <Content>
-        <Text style = {styles.welcome}>Tap the image to select a new photo</Text>
-          <View style={styles.image} >
-            <Image source={pic} style={{width: 193, height: 110}}/>
-          </View>
+          <Text style = {styles.welcome}>Tap the image to select a new photo</Text>
+          <MainImage/>
           <Text>{this.state.text}</Text>
           <Button onPress={() => this.getNameOfPicture()}>Send Data</Button>
         </Content>
