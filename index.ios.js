@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
+  ImagePickerIOS,
 } from 'react-native';
 import {
   Container,
@@ -21,7 +22,8 @@ import {
   Button,
   Icon,
   Text,
-  View, } from 'native-base';
+  View,
+} from 'native-base';
 
 import styles from './src/styles.js';
 const speech = require('react-native-speech');
@@ -90,6 +92,7 @@ export default class AI_Photo extends Component {
           <Title>AI Photo</Title>
         </Header>
         <Content>
+        <Text style = {styles.welcome}>Tap the image to select a new photo</Text>
           <View style={styles.image} >
             <Image source={pic} style={{width: 193, height: 110}}/>
           </View>
