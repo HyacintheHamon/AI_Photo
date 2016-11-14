@@ -1,7 +1,7 @@
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
- * @flow
+ *
  */
  'use strict';
 
@@ -11,7 +11,10 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
+  TouchableWithoutFeedback,
+  Animated,
 } from 'react-native';
+
 import {
   Container,
   Header,
@@ -36,26 +39,35 @@ export default class AI_Photo extends Component {
   };
   constructor(props) {
     super(props);
+
     this.state = {
       text: "hey now",
       pic: {
         uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
       },
     };
+
+    this.animatedValue = new Animated.Value(1);
   }
 
-  convertToAppropriateJson(obj) {
-    const json = JSON.stringify(obj);
-    return json;
+  talkToHuman(text) {
+    speech.speak({
+      text: 'Your photo is of a ' + text,
+      voice: 'en-US'
+    });
   }
 
-  getNameOfPicture(uri: string) {
+  imaggaApiFetch(uri: string) {
+    
+  }
+
+  microsoftApiFetch(uri: string) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Ocp-Apim-Subscription-Key', 'c3fd9e451da54cb7a1327ea21c1c182e');
     const init = {
       method: 'POST',
-      body: this.convertToAppropriateJson( {url:uri} ),
+      body: JSON.stringify( {url:uri} ),
       headers: headers
     };
 
@@ -78,11 +90,8 @@ export default class AI_Photo extends Component {
         this.setState({text:name});
         return name;
       })
-      .then((name) => {
-        // speech.speak({
-        //   text: 'Your photo is of a ' + name,
-        //   voice: 'en-US'
-        // });
+      .then((text) => {
+        this.talkToHuman(text);
       })
       .catch((error) => { console.error(error) });
   }
@@ -95,26 +104,44 @@ export default class AI_Photo extends Component {
       let res = response;
       res.width = 100;
       res.height = 100;
-      console.log(response);
-      this.setState({pic: {uri:res.origURL}});
+      console.log(res);
+      if (res.didCancel) {
+        this.setState({pic: {uri:'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'}});
+        return
+      }
+      this.setState({pic: {uri:'data:image/jpeg;base64,' + res.data, isStatic: true}});
     });
   }
 
   render() {
     return (
-      <Container>
-        <Header>
-          <Title>AI Photo</Title>
-        </Header>
-        <Content>
-          <Text style = {styles.welcome}>Tap the image to select a new photo!</Text>
-          <TouchableHighlight onPress={() => this.launchImagePicker()} style={styles.image}>
+      <View style={styles.container}>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <TouchableWithoutFeedback onPress={() => this.launchImagePicker()}>
             <Image style={{width: 193, height: 110}} source={this.state.pic} />
-          </TouchableHighlight>
+          </TouchableWithoutFeedback>
           <Text>{this.state.text}</Text>
-          <Button onPress={()=>this.getNameOfPicture(this.state.pic.uri)}>Send data</Button>
-        </Content>
-      </Container>
+        </View>
+
+        <TouchableWithoutFeedback onPress={()=> this.microsoftApiFetch(this.state.pic.uri)} >
+          <View style={buttonStyle.button}>
+            <Text style={buttonStyle.text}>Send Data</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
     );
   }
 }
+
+const buttonStyle = StyleSheet.create({
+  button: {
+    backgroundColor: '#333',
+    width: 100,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    color: '#FFF',
+  },
+});
