@@ -12,7 +12,6 @@ import {
   Image,
   TouchableHighlight,
   TouchableWithoutFeedback,
-  Animated,
 } from 'react-native';
 
 import {
@@ -31,11 +30,12 @@ import {
 import styles from './styles.js';
 const speech = require('react-native-speech');
 const ImagePicker = require('react-native-image-picker');
+const Buffer = require('buffer/').Buffer;
 
 export default class AI_Photo extends Component {
   state: {
     text: string,
-    pic: Object
+    pic: Object,
   };
   constructor(props) {
     super(props);
@@ -45,9 +45,8 @@ export default class AI_Photo extends Component {
       pic: {
         uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
       },
+      rawImageBinary: '',
     };
-
-    this.animatedValue = new Animated.Value(1);
   }
 
   talkToHuman(text) {
@@ -57,30 +56,32 @@ export default class AI_Photo extends Component {
     });
   }
 
-  imaggaApiFetch(uri: string) {
-    
-  }
-
-  microsoftApiFetch(uri: string) {
+  microsoftApiFetch(rawImageBinary: string) {
     let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
+    headers.append('Content-Type', 'application/octet-stream');
     headers.append('Ocp-Apim-Subscription-Key', 'c3fd9e451da54cb7a1327ea21c1c182e');
     const init = {
       method: 'POST',
-      body: JSON.stringify( {url:uri} ),
+      body: rawImageBinary,
       headers: headers
     };
 
-    console.log(init.body);
     const myRequest = new Request('https://api.projectoxford.ai/vision/v1.0/analyze?', init);
-
-    // i think uri is causing error
+    console.log('71');
     fetch(myRequest)
       .then((response) => {
-        if (!response.ok) {
-          throw Error('AYYYoooo')
-        } else {
+        const statusCode = response.status;
+        console.log(75);
+        console.log('The status code is: ' + statusCode);
+
+        if (statusCode === 200) {
           return response.json();
+        } else if (statusCode === 415) {
+          console.log('The media type supplied to Microsofts API is unsupported.');
+        } else if (statusCode === 400) {
+          console.log('There are many different problems that could have happened.');
+        } else if (statusCode === 500) {
+          console.log('Many possible errors. Most likely image processing timed out.');
         }
       })
       .then((json) => {
@@ -96,6 +97,7 @@ export default class AI_Photo extends Component {
       .catch((error) => { console.error(error) });
   }
 
+
   launchImagePicker() {
     const options = {
       quality: 0.5
@@ -104,7 +106,6 @@ export default class AI_Photo extends Component {
       let res = response;
       res.width = 100;
       res.height = 100;
-      console.log(res);
       if (res.didCancel) {
         this.setState({pic: {uri:'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'}});
         return
@@ -123,6 +124,7 @@ export default class AI_Photo extends Component {
           <Text>{this.state.text}</Text>
         </View>
 
+        {/* With the following I am going pass in raw image binary instead of a uri */}
         <TouchableWithoutFeedback onPress={()=> this.microsoftApiFetch(this.state.pic.uri)} >
           <View style={buttonStyle.button}>
             <Text style={buttonStyle.text}>Send Data</Text>

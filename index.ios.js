@@ -7,6 +7,6 @@
 import React, { Component } from 'react';
 import {AppRegistry} from 'react-native';
 
-import AI_Photo from './src/app.js';
+import AI_Photo from './src/App.js';
 
 AppRegistry.registerComponent('AI_Photo', () => AI_Photo);
