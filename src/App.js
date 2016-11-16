@@ -30,12 +30,13 @@ import {
 import styles from './styles.js';
 const speech = require('react-native-speech');
 const ImagePicker = require('react-native-image-picker');
-const Buffer = require('buffer/').Buffer;
+import RNFetchBlob from 'react-native-fetch-blob';
 
 export default class AI_Photo extends Component {
   state: {
     text: string,
     pic: Object,
+    rawImageBinary: string,
   };
   constructor(props) {
     super(props);
@@ -62,17 +63,18 @@ export default class AI_Photo extends Component {
     headers.append('Ocp-Apim-Subscription-Key', 'c3fd9e451da54cb7a1327ea21c1c182e');
     const init = {
       method: 'POST',
+      processData: false,
       body: rawImageBinary,
       headers: headers
     };
 
     const myRequest = new Request('https://api.projectoxford.ai/vision/v1.0/analyze?', init);
-    console.log('71');
+
     fetch(myRequest)
       .then((response) => {
         const statusCode = response.status;
-        console.log(75);
         console.log('The status code is: ' + statusCode);
+        console.log(response.json());
 
         if (statusCode === 200) {
           return response.json();
@@ -97,6 +99,21 @@ export default class AI_Photo extends Component {
       .catch((error) => { console.error(error) });
   }
 
+  sendDataToMicrosoftWithRNFetchBlob(rawImageBinary) {
+    const microsoftUrl = 'https://api.projectoxford.ai/vision/v1.0/analyze?';
+    RNFetchBlob.fetch('POST', microsoftUrl, {
+      'Accept': 'application/json',
+      'Content-Type': 'application/octet-stream',
+      'Ocp-Apim-Subscription-Key': 'c3fd9e451da54cb7a1327ea21c1c182e'
+    }, rawImageBinary)
+    .then((res) => {
+      console.log(res.json());
+      return res.json();
+    })
+    .catch (function (error) {
+      console.log(error);
+    });
+  }
 
   launchImagePicker() {
     const options = {
@@ -110,7 +127,9 @@ export default class AI_Photo extends Component {
         this.setState({pic: {uri:'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'}});
         return
       }
+
       this.setState({pic: {uri:'data:image/jpeg;base64,' + res.data, isStatic: true}});
+      this.setState({rawImageBinary: res.data});
     });
   }
 
@@ -125,7 +144,7 @@ export default class AI_Photo extends Component {
         </View>
 
         {/* With the following I am going pass in raw image binary instead of a uri */}
-        <TouchableWithoutFeedback onPress={()=> this.microsoftApiFetch(this.state.pic.uri)} >
+        <TouchableWithoutFeedback onPress={()=> this.sendDataToMicrosoftWithRNFetchBlob(this.state.rawImageBinary)}>
           <View style={buttonStyle.button}>
             <Text style={buttonStyle.text}>Send Data</Text>
           </View>
