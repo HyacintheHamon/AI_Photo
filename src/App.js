@@ -66,12 +66,8 @@ export default class AI_Photo extends Component {
     };
 
     RNFetchBlob.fetch('POST', microsoftUrl, init, rawImageBinary)
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        return json.description.captions[0].text;
-      })
+      .then(response => response.json())
+      .then(json => json.description.captions[0].text)
       .then((name) => {
         this.setState({text:name});
         return name;
