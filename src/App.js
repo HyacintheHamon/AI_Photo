@@ -95,12 +95,13 @@ export default class AI_Photo extends Component {
       let res = response;
       res.width = 100;
       res.height = 100;
+
       if (res.didCancel) {
         this.setState({pic: {uri:'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'}});
         return
       }
 
-      this.setState({pic: {uri:'data:image/jpeg;base64,' + res.data, isStatic: true}});
+      this.setState({pic: {uri: res.uri}});
       this.setState({rawImageBinary: res.data});
     });
   }
@@ -138,47 +139,3 @@ const buttonStyle = StyleSheet.create({
     color: '#FFF',
   },
 });
-
-/*
-microsoftApiFetch2(rawImageBinary: string) {
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/octet-stream');
-  headers.append('Ocp-Apim-Subscription-Key', 'c3fd9e451da54cb7a1327ea21c1c182e');
-  const init = {
-    method: 'POST',
-    processData: false,
-    body: rawImageBinary,
-    headers: headers
-  };
-
-  const myRequest = new Request('https://api.projectoxford.ai/vision/v1.0/analyze?', init);
-
-  fetch(myRequest)
-    .then((response) => {
-      const statusCode = response.status;
-      console.log('The status code is: ' + statusCode);
-      console.log(response.json());
-
-      if (statusCode === 200) {
-        return response.json();
-      } else if (statusCode === 415) {
-        console.log('The media type supplied to Microsofts API is unsupported.');
-      } else if (statusCode === 400) {
-        console.log('There are many different problems that could have happened.');
-      } else if (statusCode === 500) {
-        console.log('Many possible errors. Most likely image processing timed out.');
-      }
-    })
-    .then((json) => {
-      return json.categories[0].name;
-    })
-    .then((name) => {
-      this.setState({text:name});
-      return name;
-    })
-    .then((text) => {
-      this.talkToHuman(text);
-    })
-    .catch((error) => { console.error(error) });
-}
-*/
