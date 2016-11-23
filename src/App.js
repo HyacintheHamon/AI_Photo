@@ -31,12 +31,12 @@ const ImagePicker = require('react-native-image-picker');
 import RNFetchBlob from 'react-native-fetch-blob';
 
 export default class AI_Photo extends Component {
-  state: {
-    text: string,
-    pic: Object,
-    rawImageBinary: string,
-    isLoading: boolean,
-  };
+  // state: {
+  //   text: string,
+  //   pic: Object,
+  //   rawImageBinary: string,
+  //   isLoading: boolean,
+  // };
   constructor(props) {
     super(props);
     this.state = {
@@ -70,6 +70,7 @@ export default class AI_Photo extends Component {
       .then(response => response.json())
       .then(json => json.description.captions[0].text)
       .then((name) => {
+        this.setState({ isLoading: false });
         this.setState({text: name});
         return name;
       })
@@ -106,7 +107,13 @@ export default class AI_Photo extends Component {
     });
   }
 
+  buttonWasPressed() {
+    this.microsoftApiFetch(this.state.rawImageBinary);
+    this.setState({ isLoading: true });
+  }
+
   render() {
+    let spinner = this.state.isLoading ? (<ActivityIndicator size='large'/>) : (<View/>);
     return (
       <View style={styles.container}>
 
@@ -120,11 +127,15 @@ export default class AI_Photo extends Component {
         <Text>{this.state.text}</Text>
 
         {/* With the following I am going pass in raw image binary instead of a uri */}
-        <TouchableWithoutFeedback onPress={()=> this.microsoftApiFetch(this.state.rawImageBinary)}>
+        <TouchableWithoutFeedback onPress={()=> this.buttonWasPressed()}>
           <View style={buttonStyle.button}>
             <Text style={buttonStyle.text}>Send Data</Text>
           </View>
         </TouchableWithoutFeedback>
+
+        <View style={{marginTop:20}}>
+          {spinner}
+        </View>
       </View>
     );
   }
