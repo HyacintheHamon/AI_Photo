@@ -1,19 +1,18 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
- 'use strict';
+'use strict';
 
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  View,
+  Text,
   StyleSheet,
   Image,
   TouchableHighlight,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from 'react-native';
 
+/*
 import {
   Container,
   Header,
@@ -23,9 +22,8 @@ import {
   FooterTab,
   Button,
   Icon,
-  Text,
-  View,
 } from 'native-base';
+*/
 
 import styles from './styles.js';
 const speech = require('react-native-speech');
@@ -37,19 +35,21 @@ export default class AI_Photo extends Component {
     text: string,
     pic: Object,
     rawImageBinary: string,
+    isLoading: boolean,
   };
   constructor(props) {
     super(props);
-
     this.state = {
       text: "hey now",
       pic: {
         uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
       },
       rawImageBinary: '',
+      isLoading: false,
     };
   }
 
+  // speaks to the user after the data is returned from the microsoft fetch.
   talkToHuman(text) {
     speech.speak({
       text: 'Your photo is of ' + text,
@@ -57,6 +57,7 @@ export default class AI_Photo extends Component {
     });
   }
 
+  // takes the image as raw binary and sends a post request to microsoft cognitive services API.
   microsoftApiFetch(rawImageBinary) {
     const microsoftUrl = 'https://api.projectoxford.ai/vision/v1.0/analyze?visualFeatures=Categories,Tags,Description,Faces,ImageType,Color,Adult&details=Celebrities&language=en';
     const init = {
@@ -69,7 +70,7 @@ export default class AI_Photo extends Component {
       .then(response => response.json())
       .then(json => json.description.captions[0].text)
       .then((name) => {
-        this.setState({text:name});
+        this.setState({text: name});
         return name;
       })
       .then((text) => {
@@ -108,12 +109,15 @@ export default class AI_Photo extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <TouchableWithoutFeedback onPress={() => this.launchImagePicker()}>
-            <Image style={{width: 193, height: 110}} source={this.state.pic} />
-          </TouchableWithoutFeedback>
-          <Text>{this.state.text}</Text>
-        </View>
+
+        <Text>Tap the image to select a photo!</Text>
+
+        <TouchableWithoutFeedback onPress={() => this.launchImagePicker()}>
+          <Image style={styles.mainImage} source={this.state.pic} />
+        </TouchableWithoutFeedback>
+
+
+        <Text>{this.state.text}</Text>
 
         {/* With the following I am going pass in raw image binary instead of a uri */}
         <TouchableWithoutFeedback onPress={()=> this.microsoftApiFetch(this.state.rawImageBinary)}>
@@ -139,6 +143,7 @@ const buttonStyle = StyleSheet.create({
   },
 });
 
+// The JSON data that is returned from microsoft.
 /*
 {
   categories: [{

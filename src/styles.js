@@ -1,6 +1,3 @@
-/*
-* @flow
-*/
 'use strict';
 
 import React, { Component } from 'react';
@@ -9,24 +6,14 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#f7f7f7',
+    marginTop: 20,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  image:{
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  mainImage: {
+    width: 320,
+    height: 200,
+    borderWidth: 2,
   },
 });
 
