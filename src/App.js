@@ -88,6 +88,11 @@ export default class AI_Photo extends Component {
       })
   }
 
+  buttonWasPressed() {
+    this.microsoftApiFetch(this.state.rawImageBinary);
+    this.setState({ isLoading: true });
+  }
+
   launchImagePicker() {
     const options = {
       quality: 0.5
@@ -104,12 +109,9 @@ export default class AI_Photo extends Component {
 
       this.setState({pic: {uri: res.uri}});
       this.setState({rawImageBinary: res.data});
-    });
-  }
 
-  buttonWasPressed() {
-    this.microsoftApiFetch(this.state.rawImageBinary);
-    this.setState({ isLoading: true });
+      this.buttonWasPressed();
+    });
   }
 
   render() {
@@ -123,19 +125,12 @@ export default class AI_Photo extends Component {
           <Image style={styles.mainImage} source={this.state.pic} />
         </TouchableWithoutFeedback>
 
-
         <Text>{this.state.text}</Text>
 
-        {/* With the following I am going pass in raw image binary instead of a uri */}
-        <TouchableWithoutFeedback onPress={()=> this.buttonWasPressed()}>
-          <View style={buttonStyle.button}>
-            <Text style={buttonStyle.text}>Send Data</Text>
-          </View>
-        </TouchableWithoutFeedback>
-
         <View style={{marginTop:20}}>
-          {spinner}
+          { spinner }
         </View>
+
       </View>
     );
   }
