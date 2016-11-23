@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   View,
   Text,
   StyleSheet,
@@ -17,6 +16,7 @@ const speech = require('react-native-speech');
 const ImagePicker = require('react-native-image-picker');
 import RNFetchBlob from 'react-native-fetch-blob';
 import './Extensions.js';
+const FeaturesList = require('./FeaturesList.js');
 
 export default class AI_Photo extends Component {
   constructor(props) {
