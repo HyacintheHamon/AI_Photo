@@ -12,35 +12,17 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-/*
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Footer,
-  FooterTab,
-  Button,
-  Icon,
-} from 'native-base';
-*/
-
 import styles from './styles.js';
 const speech = require('react-native-speech');
 const ImagePicker = require('react-native-image-picker');
 import RNFetchBlob from 'react-native-fetch-blob';
+import './Extensions.js';
 
 export default class AI_Photo extends Component {
-  // state: {
-  //   text: string,
-  //   pic: Object,
-  //   rawImageBinary: string,
-  //   isLoading: boolean,
-  // };
   constructor(props) {
     super(props);
     this.state = {
-      text: "hey now",
+      photoDescription: "hey now",
       pic: {
         uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
       },
@@ -68,11 +50,15 @@ export default class AI_Photo extends Component {
 
     RNFetchBlob.fetch('POST', microsoftUrl, init, rawImageBinary)
       .then(response => response.json())
-      .then(json => json.description.captions[0].text)
-      .then((name) => {
+      .then((json) => {
+        const photoDescription = json.description.captions[0].text;
+        const editedDescription = photoDescription.capitalizeFirstLetter() + '.';
+        return editedDescription;
+      })
+      .then((photoDescription) => {
         this.setState({ isLoading: false });
-        this.setState({text: name});
-        return name;
+        this.setState({photoDescription: photoDescription});
+        return photoDescription;
       })
       .then((text) => {
         this.talkToHuman(text);
@@ -125,7 +111,7 @@ export default class AI_Photo extends Component {
           <Image style={styles.mainImage} source={this.state.pic} />
         </TouchableWithoutFeedback>
 
-        <Text>{this.state.text}</Text>
+        <Text>{this.state.photoDescription}</Text>
 
         <View style={{marginTop:20}}>
           { spinner }
@@ -135,19 +121,6 @@ export default class AI_Photo extends Component {
     );
   }
 }
-
-const buttonStyle = StyleSheet.create({
-  button: {
-    backgroundColor: '#333',
-    width: 100,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    color: '#FFF',
-  },
-});
 
 // The JSON data that is returned from microsoft.
 /*
