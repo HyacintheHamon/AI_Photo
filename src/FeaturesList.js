@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 class FeaturesList extends Component {
-
+  
 }
 
 module.exports = FeaturesList;
