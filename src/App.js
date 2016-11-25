@@ -101,7 +101,8 @@ export default class AI_Photo extends Component {
   }
 
   render() {
-    let spinner = this.state.isLoading ? (<ActivityIndicator size='large'/>) : (<View/>);
+    const featuresList = (<FeaturesList description={this.state.photoDescription}/>);
+    let spinner = this.state.isLoading ? (<ActivityIndicator size='large'/>) : (featuresList);
     return (
       <View style={styles.container}>
 
@@ -111,13 +112,9 @@ export default class AI_Photo extends Component {
           <Image style={styles.mainImage} source={this.state.pic} />
         </TouchableWithoutFeedback>
 
-        <Text>{this.state.photoDescription}</Text>
-
         <View style={{marginTop:20}}>
           { spinner }
         </View>
-
-        <FeaturesList/>
 
       </View>
     );
