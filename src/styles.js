@@ -8,12 +8,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#f7f7f7',
-    marginTop: 20,
   },
   mainImage: {
     width: 320,
     height: 200,
     borderWidth: 2,
+    marginTop: 20,
   },
 });
 

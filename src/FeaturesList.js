@@ -5,10 +5,8 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableHighlight,
   TouchableWithoutFeedback,
-  ActivityIndicator,
 } from 'react-native';
 
 class FeaturesList extends Component {

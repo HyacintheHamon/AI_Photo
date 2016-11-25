@@ -11,7 +11,9 @@
     "react-native-image-picker": "^0.22.14",
     "react-native-randombytes": "^2.1.0",
     "react-native-speech": "^0.1.2",
-    "react-native-vector-icons": "^3.0.0"
+    "react-native-tableview-simple": "^0.13.0",
+    "react-native-vector-icons": "^3.0.0",
+    "whatwg-fetch": "^1.1.1"
   },
   "jest": {
     "preset": "jest-react-native"

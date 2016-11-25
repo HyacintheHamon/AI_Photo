@@ -89,7 +89,7 @@ export default class AI_Photo extends Component {
       res.height = 100;
 
       if (res.didCancel) {
-        this.setState({pic: {uri:'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'}});
+        this.setState({pic: {uri: this.state.pic.uri}});
         return
       }
 
@@ -105,7 +105,7 @@ export default class AI_Photo extends Component {
     return (
       <View style={styles.container}>
 
-        <Text>Tap the image to select a photo!</Text>
+        <Text style={{marginTop:20}}>Tap the image to select a photo!</Text>
 
         <TouchableWithoutFeedback onPress={() => this.launchImagePicker()}>
           <Image style={styles.mainImage} source={this.state.pic} />
