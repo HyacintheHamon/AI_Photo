@@ -117,6 +117,8 @@ export default class AI_Photo extends Component {
           { spinner }
         </View>
 
+        <FeaturesList/>
+
       </View>
     );
   }
