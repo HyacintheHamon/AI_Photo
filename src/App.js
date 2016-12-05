@@ -11,7 +11,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import styles from './styles.js';
 const speech = require('react-native-speech');
 const ImagePicker = require('react-native-image-picker');
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -120,6 +119,20 @@ export default class AI_Photo extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#f7f7f7',
+  },
+  mainImage: {
+    width: 320,
+    height: 200,
+    borderWidth: 2,
+    marginTop: 20,
+  },
+});
 
 // The JSON data that is returned from microsoft.
 /*
