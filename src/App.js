@@ -21,9 +21,9 @@ export default class AI_Photo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      photoDescription: "hey now",
+      photoDescription: 'A Pollock painting.',
       pic: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
+        uri: 'https://s-media-cache-ak0.pinimg.com/originals/5b/d6/ad/5bd6ad50faf00a3741eaea7a4f2b5c33.jpg'
       },
       rawImageBinary: '',
       isLoading: false,
@@ -105,7 +105,7 @@ export default class AI_Photo extends Component {
     return (
       <View style={styles.container}>
 
-        <Text style={{marginTop:20}}>Tap the image to select a photo!</Text>
+        <Text style={styles.header}>Tap the image to select a photo!</Text>
 
         <TouchableWithoutFeedback onPress={() => this.launchImagePicker()}>
           <Image style={styles.mainImage} source={this.state.pic} />
@@ -124,75 +124,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#37FDFC',
+  },
+  header: {
+    fontSize: 24,
+    marginTop: 24,
   },
   mainImage: {
-    width: 320,
-    height: 200,
+    width: 250,
+    height: 250,
+    borderRadius: 125,
     borderWidth: 2,
     marginTop: 20,
   },
 });
-
-// The JSON data that is returned from microsoft.
-/*
-{
-  categories: [{
-    name: 'outdoor_water',
-    score: 0.828125
-  }],
-  adult:
-   { isAdultContent: false,
-     isRacyContent: false,
-     adultScore: 0.007351919077336788,
-     racyScore: 0.012373056262731552 },
-  tags:
-   [ { name: 'outdoor', confidence: 0.9959841966629028 },
-     { name: 'mountain', confidence: 0.9949145317077637 },
-     { name: 'nature', confidence: 0.9926238059997559 },
-     { name: 'sky', confidence: 0.9898942112922668 },
-     { name: 'grass', confidence: 0.9620691537857056 },
-     { name: 'hill', confidence: 0.7776529788970947 },
-     { name: 'waterfall', confidence: 0.7644999623298645 },
-     { name: 'hillside', confidence: 0.6875730156898499 },
-     { name: 'canyon', confidence: 0.6577474474906921 },
-     { name: 'dirt', confidence: 0.2712985873222351 },
-     { name: 'lush', confidence: 0.19674451649188995 } ],
-  description:
-   { tags:
-      [ 'outdoor',
-        'mountain',
-        'nature',
-        'grass',
-        'hill',
-        'waterfall',
-        'hillside',
-        'side',
-        'water',
-        'rocky',
-        'narrow',
-        'river',
-        'train',
-        'path',
-        'trail',
-        'going',
-        'green',
-        'dirt',
-        'country',
-        'standing',
-        'sheep',
-        'man',
-        'grassy',
-        'large',
-        'traveling',
-        'forest',
-        'track',
-        'field',
-        'grazing',
-        'herd',
-        'riding',
-        'slope' ],
-     captions:
-      [ { text: 'a train on a rocky hill',
-          confidence: 0.4519705464105171 } ] },
-*/

@@ -22,8 +22,8 @@ class FeaturesList extends Component {
     return (
       <ScrollView contentContainerStyle={tableViewStyles.stage}>
         <TableView>
-          <Section header='FEATURES' footer='A Jacob Siegel Production.'>
-            <Cell cellStyle='RightDetail' title='Description' detail={this.props.description} />
+          <Section header='DESCRIPTION' footer='A Jacob Siegel Production.'>
+            <Cell cellStyle='RightDetail' title={this.props.description} />
           </Section>
         </TableView>
       </ScrollView>
@@ -34,8 +34,6 @@ class FeaturesList extends Component {
 const tableViewStyles = StyleSheet.create({
   stage: {
     backgroundColor: '#EFEFF4',
-    paddingTop: 20,
-    paddingBottom: 20,
     width: 320,
   },
 });
