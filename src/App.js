@@ -16,6 +16,7 @@ const ImagePicker = require('react-native-image-picker');
 import RNFetchBlob from 'react-native-fetch-blob';
 import './Extensions.js';
 const FeaturesList = require('./FeaturesList.js');
+const OcpApimSubscriptionKey = require('./../config.js');
 
 export default class AI_Photo extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ export default class AI_Photo extends Component {
     const init = {
       'Accept': 'application/json',
       'Content-Type': 'application/octet-stream',
-      'Ocp-Apim-Subscription-Key': 'c3fd9e451da54cb7a1327ea21c1c182e'
+      'Ocp-Apim-Subscription-Key': OcpApimSubscriptionKey,
     };
 
     RNFetchBlob.fetch('POST', microsoftUrl, init, rawImageBinary)
