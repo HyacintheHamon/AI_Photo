@@ -1,3 +1,3 @@
-const OcpApimSubscriptionKey = 'c3fd9e451da54cb7a1327ea21c1c182e';
+const OcpApimSubscriptionKey = 'xxxxxxxxxxxxxxxxxxxxxxxxxx';
 
 module.exports = OcpApimSubscriptionKey;
